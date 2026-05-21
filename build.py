@@ -171,12 +171,25 @@ def render_close(s):
 def render_chapter(s):
     """Chapter title cards — body-slide style but bigger headline."""
     audio = f"audio/slide_{s['n']:02d}.mp3"
-    return f'''<section class="slide" data-audio="{audio}" data-label="{esc(s['title'] + ' · ' + s.get('subtitle',''))}">
+    ch_label = s.get('chapter', '')  # "CH I" / "CH II" / "CH III"
+    roman = ch_label.replace("CH ", "") or s.get('title', '').replace('Chapter ', '').strip()
+    chapter_word = {"I": "One", "II": "Two", "III": "Three"}.get(roman, roman)
+    # subtitle like "The Right Target — every time." — split off the trailing "every time." for the splash
+    sub_full = s.get('subtitle', '').strip()
+    if sub_full.lower().endswith("— every time."):
+        head = sub_full[: -len("— every time.")].rstrip()
+        title_html = f'{esc(head)} — <span class="splash">every time.</span>'
+    elif sub_full.lower().endswith("every time."):
+        head = sub_full[: -len("every time.")].rstrip()
+        title_html = f'{esc(head)} <span class="splash">every time.</span>'
+    else:
+        title_html = splash_title(sub_full)
+    return f'''<section class="slide" data-audio="{audio}" data-label="{esc(s['title'] + ' · ' + sub_full)}">
   <div class="spread body-slide" style="--accent:var(--red)">
     {corners()}
     {folio(s, 'CHAPTER')}
-    <div class="eyebrow">— Chapter {{ romans(s.n) }} —</div>
-    <h2>{esc(s.get('subtitle','').rstrip('.'))} <span class="splash">every time.</span></h2>
+    <div class="eyebrow">— Chapter {esc(chapter_word)} —</div>
+    <h2>{title_html}</h2>
     <div class="body-grid single">
       <div class="lede">A complete causal chapter of the BiRAGAS platform — diagnosis of the failure, correction of the mechanism, consequence for the field.</div>
     </div>
@@ -522,6 +535,11 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;o
 .now-playing .eq span:nth-child(4){height:90%;animation-delay:0.1s}
 @keyframes eq{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
 
+/* MOBILE SWIPE HINT */
+.swipe-hint{display:none;position:fixed;bottom:74px;left:50%;transform:translateX(-50%);z-index:60;background:rgba(15,15,15,0.78);color:var(--paper);padding:6px 12px;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;border-radius:14px;pointer-events:none;animation:hint-fade 4s ease-out forwards 1}
+@keyframes hint-fade{0%,30%{opacity:1}100%{opacity:0;visibility:hidden}}
+@media (max-width:600px){.swipe-hint{display:block}}
+
 /* SIDE NAV */
 .side-nav{position:fixed;top:50%;transform:translateY(-50%);z-index:70;display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;background:rgba(15,15,15,0.72);color:var(--paper);border:2px solid rgba(244,239,231,0.45);cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:background 0.22s ease,border-color 0.22s ease,box-shadow 0.22s ease,transform 0.18s ease,opacity 0.22s ease;font-family:"DM Mono",ui-monospace,monospace;font-size:34px;font-weight:300;line-height:1;padding:0;user-select:none}
 .side-nav .chev{display:block;transform:translateY(-2px)}
@@ -553,8 +571,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;o
 }
 @media (max-width: 600px){
   html,body{font-size:16px;line-height:1.45}
-  .side-nav{width:46px;height:46px;font-size:24px;background:rgba(15,15,15,0.78);border-width:1.5px}
-  .side-nav.prev{left:8px} .side-nav.next{right:8px}
+  /* hide floating side-nav on phones (swipe + footer arrows + headline-tap cover navigation) */
+  .side-nav{display:none}
   .spread,.body-slide{padding:20px 18px 24px}
   .corner{width:22px;height:22px;border-width:1.5px}
   .corner.tl,.corner.tr{top:18px} .corner.tl{left:16px} .corner.tr{right:16px}
@@ -615,6 +633,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;o
 </div>
 
 <audio id="player" preload="auto"></audio>
+
+<div class="swipe-hint" id="swipe-hint">◂ swipe to navigate ▸</div>
 
 <div class="now-playing" id="now-playing">
   <span class="eq"><span></span><span></span><span></span><span></span></span>
