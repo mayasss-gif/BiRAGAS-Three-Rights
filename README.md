@@ -1,7 +1,16 @@
 # BiRAGAS · The Three Rights
 
 **Edition:** MMXXVI · 56 slides · ~14 minutes narrated · Ayass BioScience
-**Reference:** https://mayasss-gif.github.io/BiRAGAS-Tailored-Drug-Treatment
+**Public URL:** https://mayasss-gif.github.io/BiRAGAS-Three-Rights/
+**Repo:** https://github.com/mayasss-gif/BiRAGAS-Three-Rights
+**Sibling design:** https://mayasss-gif.github.io/BiRAGAS-Tailored-Drug-Treatment
+
+## Mobile support
+- iPhone (Safari) and Android (Chrome) verified at 375×667 / 390×844 / 412×915 viewports
+- Swipe left/right to navigate · tap headline to replay narration
+- Floating side-nav arrows hidden on phones (footer arrows + swipe cover navigation)
+- Three-up card grids collapse to vertical stacks on small screens
+- Two-column body grid collapses to single column at ≤900px
 
 ## How to open
 
