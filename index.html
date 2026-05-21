@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0F0F">
+<title>BiRAGAS · The Three Rights · Ayass BioScience · MMXXVI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4EFE7; --paper-deep:#E8E0CF; --paper-soft:#FAF6EE;
+  --ink:#0F0F0F; --ink-soft:#2A2A2A; --rule:#11111122;
+  --red:#E63946; --red-deep:#B82C36; --mustard:#D4A017; --cobalt:#1E40AF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;font-size:18px;line-height:1.55;overflow:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:0.42;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.06 0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");background-size:300px 300px}
+
+.deck{position:fixed;inset:0;display:flex;flex-direction:column}
+.masthead{flex-shrink:0;background:var(--ink);color:var(--paper);padding:10px 36px;display:flex;justify-content:space-between;align-items:center;gap:24px;font-family:"DM Mono",ui-monospace,monospace;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;z-index:50}
+.masthead .brand{display:flex;gap:18px;align-items:center}
+.masthead .brand .b{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 96,"wght" 700,"SOFT" 50,"WONK" 1;font-size:22px;text-transform:none;letter-spacing:-0.02em;color:var(--paper)}
+.masthead .brand .b .dot{color:var(--red)}
+.masthead .meta{color:#e8e0cfaa}
+.masthead .controls{display:flex;gap:10px}
+.btn{background:transparent;color:var(--paper);border:1px solid #ffffff55;padding:5px 12px;font-family:"DM Mono";font-size:11px;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:all 0.18s}
+.btn:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.btn.on{background:var(--red);color:var(--paper);border-color:var(--red)}
+.btn .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle}
+.btn.on .dot{background:var(--paper);animation:blink 1.2s steps(2) infinite}
+@keyframes blink{50%{opacity:0.2}}
+
+.stage{flex:1;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity 0.5s ease;overflow-y:auto}
+.slide.active{opacity:1;visibility:visible}
+
+.footer{flex-shrink:0;background:var(--paper-deep);border-top:1px solid var(--ink);padding:10px 36px;display:flex;align-items:center;gap:24px;font-family:"DM Mono";font-size:12px;letter-spacing:0.18em;text-transform:uppercase;z-index:50}
+.footer .nav-btn{background:var(--ink);color:var(--paper);border:none;padding:6px 16px;font-family:"DM Mono";font-size:14px;letter-spacing:0.18em;cursor:pointer;transition:background 0.18s}
+.footer .nav-btn:disabled{background:#888;cursor:not-allowed}
+.footer .nav-btn:hover:not(:disabled){background:var(--red)}
+.footer .counter{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 36,"wght" 600;font-size:24px;letter-spacing:-0.01em;min-width:90px;text-align:center}
+.footer .counter .of{color:var(--red);margin:0 6px}
+.footer .progress{flex:1;height:4px;background:#0001;position:relative;overflow:hidden}
+.footer .bar{position:absolute;left:0;top:0;height:100%;background:var(--red);transition:width 0.35s ease}
+.footer .scrubber{display:flex;gap:4px;max-width:42%;overflow:hidden}
+.footer .pip{width:8px;height:8px;background:#0002;cursor:pointer;transition:all 0.18s;border-radius:50%;flex-shrink:0}
+.footer .pip.done{background:var(--ink)}
+.footer .pip.active{background:var(--red);transform:scale(1.6)}
+
+.spread{position:relative;width:100%;height:100%;padding:42px 80px 60px}
+.folio{display:flex;justify-content:space-between;align-items:center;font-family:"DM Mono";font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-soft);padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.folio .pill{background:var(--ink);color:var(--paper);padding:3px 10px}
+.folio .pill.accent{background:var(--accent,var(--red))}
+
+.corner{position:absolute;width:30px;height:30px;border:2px solid var(--ink);pointer-events:none}
+.corner.tl{top:30px;left:30px;border-right:none;border-bottom:none}
+.corner.tr{top:30px;right:30px;border-left:none;border-bottom:none}
+.corner.bl{bottom:48px;left:30px;border-right:none;border-top:none}
+.corner.br{bottom:48px;right:30px;border-left:none;border-top:none}
+
+/* COVER */
+.cover{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left}
+.cover .eyebrow{font-family:"DM Mono";font-size:14px;letter-spacing:0.32em;text-transform:uppercase;color:var(--red);margin-bottom:28px;display:flex;align-items:center;gap:14px}
+.cover .eyebrow::before{content:"";width:50px;height:1px;background:var(--ink-soft)}
+.cover h1{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 144,"wght" 380,"SOFT" 100,"WONK" 1;font-size:clamp(80px,10vw,168px);line-height:0.94;letter-spacing:-0.035em;color:var(--ink);margin-bottom:26px}
+.cover h1 .splash{background:var(--red);color:var(--paper);padding:0 0.1em;display:inline-block;transform:rotate(-1.5deg)}
+.cover .sub{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 96,"wght" 400;font-size:clamp(22px,2.4vw,42px);line-height:1.22;color:var(--ink-soft);max-width:1400px}
+.cover .sub .acc{color:var(--red);font-weight:600}
+.cover .meta-row{margin-top:48px;font-family:"DM Mono";font-size:13px;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-soft);display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.cover .meta-row .pill{background:var(--ink);color:var(--paper);padding:3px 10px}
+.cover .meta-row .pill.red{background:var(--red)}
+
+/* BODY */
+.body-slide{display:flex;flex-direction:column;padding:42px 80px 60px;height:100%}
+.body-slide .eyebrow{font-family:"DM Mono";font-size:13px;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent,var(--red));margin-top:14px;margin-bottom:16px;display:flex;align-items:center;gap:14px}
+.body-slide h2{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 144,"wght" 480,"SOFT" 100,"WONK" 1;font-size:clamp(46px,6.4vw,108px);line-height:0.98;letter-spacing:-0.028em;color:var(--ink);margin-bottom:26px;max-width:1500px;cursor:pointer}
+.body-slide h2 em{font-style:italic;color:var(--accent,var(--red))}
+.body-slide h2 .splash{background:var(--accent,var(--red));color:var(--paper);padding:0 0.1em;display:inline-block;transform:rotate(-1deg)}
+.body-slide .body-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;flex:1;align-items:start}
+.body-slide .body-grid.single{grid-template-columns:1fr;max-width:1500px}
+.body-slide .lede{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 96,"wght" 400;font-size:clamp(20px,2.1vw,34px);line-height:1.36;color:var(--ink);padding-left:22px;border-left:4px solid var(--accent,var(--red));max-width:1100px}
+.body-slide .lede strong,.body-slide .lede em{font-style:italic;font-weight:500;color:var(--accent,var(--red))}
+.body-slide .lede .num{font-family:"Fraunces";font-weight:800;font-variation-settings:"opsz" 96,"wght" 800;color:var(--accent,var(--red));font-style:normal}
+.body-slide .side{font-family:"Newsreader";font-size:17px;line-height:1.58;color:var(--ink-soft)}
+.body-slide .side .pull{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 96,"wght" 500;font-size:26px;line-height:1.24;color:var(--ink);margin-bottom:18px;padding-bottom:18px;border-bottom:2px solid var(--accent,var(--red))}
+.body-slide .side .pull::before{content:"❡ ";color:var(--accent,var(--red));font-style:normal}
+.body-slide .side em{font-style:italic;color:var(--accent,var(--red))}
+.body-slide .side .num{font-family:"Fraunces";font-weight:700;color:var(--accent,var(--red));font-style:normal}
+.body-slide .footnote{margin-top:24px;font-family:"DM Mono";font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);max-width:1500px}
+.body-slide .audio-hint{position:absolute;bottom:74px;right:60px;font-family:"DM Mono";font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);opacity:0.65}
+.body-slide .audio-hint::before{content:"▷ ";color:var(--accent,var(--red))}
+
+/* CARDS — 3-up grid for framework + rights */
+.cards-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;flex:1;align-content:start}
+.card{background:var(--paper-soft);border:1px solid var(--rule);padding:26px 24px;position:relative}
+.card .num{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 96,"wght" 800;font-size:64px;line-height:1;color:var(--accent,var(--red));margin-bottom:12px}
+.card .card-label{font-family:"DM Mono";font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink);margin-bottom:10px}
+.card .card-desc{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 36,"wght" 400;font-size:18px;line-height:1.4;color:var(--ink-soft)}
+.card.right-card{border-top:6px solid var(--accent,var(--red))}
+.card.right-card.red{border-top-color:var(--red)} .card.right-card.red .num{color:var(--red)}
+.card.right-card.mustard{border-top-color:var(--mustard)} .card.right-card.mustard .num{color:var(--mustard)}
+.card.right-card.cobalt{border-top-color:var(--cobalt)} .card.right-card.cobalt .num{color:var(--cobalt)}
+
+/* PIPELINE */
+.pipeline-flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 28px;padding:6px 0}
+.pipe-node{font-family:"DM Mono";font-size:13px;letter-spacing:0.16em;padding:12px 20px;border:1.5px solid var(--ink);background:var(--paper-soft);color:var(--ink);text-transform:uppercase}
+.pipe-node.dossier{background:var(--mustard);color:var(--ink);font-weight:700}
+.pipe-arrow{font-size:22px;color:var(--accent,var(--red))}
+
+/* ASK */
+.ask-grid{display:grid;grid-template-columns:1fr;gap:0;max-width:1100px;margin-top:6px}
+.ask-row{display:grid;grid-template-columns:260px 1fr;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--rule)}
+.ask-row .k{font-family:"DM Mono";font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent,var(--cobalt))}
+.ask-row .v{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 36,"wght" 400;font-size:22px;color:var(--ink)}
+
+/* CLOSE */
+.close-slide{background:var(--ink);color:var(--paper);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 100px}
+.close-slide .corner{border-color:var(--paper)}
+.close-slide .eyebrow{font-family:"DM Mono";font-size:13px;letter-spacing:0.32em;text-transform:uppercase;color:var(--red);margin-bottom:46px;display:inline-flex;gap:14px;align-items:center}
+.close-slide .eyebrow::before,.close-slide .eyebrow::after{content:"";width:50px;height:1px;background:var(--red)}
+.close-slide .manifesto{font-family:"Fraunces";font-style:italic;font-variation-settings:"opsz" 144,"wght" 400,"SOFT" 100,"WONK" 1;font-size:clamp(48px,6.5vw,96px);line-height:1.08;letter-spacing:-0.025em;color:var(--paper);max-width:1500px;cursor:pointer}
+.close-slide .manifesto .next{margin-top:24px}
+.close-slide .manifesto .acc{color:var(--red);font-weight:600}
+.close-slide .manifesto .period{display:inline-block;width:0.22em;height:0.22em;background:var(--red);border-radius:50%;margin-left:0.05em;transform:translateY(0.06em)}
+.close-slide .tag{margin-top:64px;font-family:"DM Mono";font-size:13px;letter-spacing:0.3em;text-transform:uppercase;color:#ffffff80}
+
+/* NOW PLAYING */
+.now-playing{position:fixed;bottom:88px;left:36px;background:var(--ink);color:var(--paper);padding:10px 16px;font-family:"DM Mono";font-size:11px;letter-spacing:0.18em;text-transform:uppercase;border-left:3px solid var(--red);display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(20px);transition:all 0.3s ease;z-index:80;pointer-events:none;max-width:50%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.now-playing.on{opacity:1;transform:translateY(0)}
+.now-playing .eq{display:inline-flex;gap:2px;height:14px;align-items:end;flex-shrink:0}
+.now-playing .eq span{width:3px;background:var(--red);transform-origin:bottom;animation:eq 0.9s ease-in-out infinite}
+.now-playing .eq span:nth-child(1){height:60%;animation-delay:0s}
+.now-playing .eq span:nth-child(2){height:100%;animation-delay:0.2s}
+.now-playing .eq span:nth-child(3){height:70%;animation-delay:0.4s}
+.now-playing .eq span:nth-child(4){height:90%;animation-delay:0.1s}
+@keyframes eq{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
+
+/* SIDE NAV */
+.side-nav{position:fixed;top:50%;transform:translateY(-50%);z-index:70;display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;background:rgba(15,15,15,0.72);color:var(--paper);border:2px solid rgba(244,239,231,0.45);cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:background 0.22s ease,border-color 0.22s ease,box-shadow 0.22s ease,transform 0.18s ease,opacity 0.22s ease;font-family:"DM Mono",ui-monospace,monospace;font-size:34px;font-weight:300;line-height:1;padding:0;user-select:none}
+.side-nav .chev{display:block;transform:translateY(-2px)}
+.side-nav:hover:not(:disabled){background:var(--red);border-color:var(--red);box-shadow:0 10px 28px rgba(230,57,70,0.4);transform:translateY(-50%) scale(1.06)}
+.side-nav:active:not(:disabled){transform:translateY(-50%) scale(0.94)}
+.side-nav:disabled{opacity:0.22;cursor:not-allowed;pointer-events:none}
+.side-nav.prev{left:24px}
+.side-nav.next{right:24px}
+.side-nav:focus-visible{outline:3px solid var(--red);outline-offset:4px}
+
+.footer .nav-btn{min-width:54px;min-height:44px;font-size:20px;padding:10px 22px;display:inline-flex;align-items:center;justify-content:center}
+.btn:focus-visible,.nav-btn:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+
+@media (max-width: 900px){
+  html,body{font-size:17px}
+  .side-nav{width:56px;height:56px;font-size:28px}
+  .side-nav.prev{left:14px} .side-nav.next{right:14px}
+  .spread,.body-slide{padding:30px 38px 56px}
+  .cover h1{font-size:clamp(52px,9vw,120px);line-height:0.96}
+  .body-slide h2{font-size:clamp(34px,6vw,84px);line-height:1.02}
+  .cover .sub{font-size:clamp(20px,2.8vw,36px)}
+  .body-slide .body-grid{grid-template-columns:1fr;gap:24px}
+  .body-slide .lede{font-size:clamp(18px,2.6vw,28px);max-width:100%}
+  .body-slide .side .pull{font-size:22px}
+  .close-slide .manifesto{font-size:clamp(36px,5.6vw,72px)}
+  .masthead{padding:8px 22px;font-size:11px} .masthead .brand .b{font-size:18px} .masthead .meta{display:none}
+  .footer{padding:8px 22px;gap:14px} .footer .counter{font-size:18px;min-width:64px}
+  .cards-3{grid-template-columns:1fr 1fr}
+}
+@media (max-width: 600px){
+  html,body{font-size:16px;line-height:1.45}
+  .side-nav{width:46px;height:46px;font-size:24px;background:rgba(15,15,15,0.78);border-width:1.5px}
+  .side-nav.prev{left:8px} .side-nav.next{right:8px}
+  .spread,.body-slide{padding:20px 18px 24px}
+  .corner{width:22px;height:22px;border-width:1.5px}
+  .corner.tl,.corner.tr{top:18px} .corner.tl{left:16px} .corner.tr{right:16px}
+  .corner.bl,.corner.br{bottom:32px} .corner.bl{left:16px} .corner.br{right:16px}
+  .cover{justify-content:flex-start;padding-top:6vh}
+  .cover h1{font-size:clamp(40px,12vw,72px);line-height:0.98;margin-bottom:14px}
+  .cover .sub{font-size:clamp(18px,5vw,28px)}
+  .cover .meta-row{margin-top:24px;gap:10px;font-size:10px;letter-spacing:0.18em}
+  .body-slide h2{font-size:clamp(26px,7.2vw,50px);line-height:1.04;margin-bottom:14px}
+  .body-slide .eyebrow{font-size:10px}
+  .body-slide .body-grid{gap:18px}
+  .body-slide .lede{font-size:clamp(16px,4.2vw,22px);padding-left:14px;border-left-width:3px}
+  .body-slide .side{font-size:15px}
+  .body-slide .side .pull{font-size:18px;margin-bottom:12px;padding-bottom:12px}
+  .body-slide .audio-hint{display:none}
+  .folio{font-size:10px;flex-wrap:wrap;gap:8px}
+  .close-slide{padding:30px 22px}
+  .close-slide .manifesto{font-size:clamp(28px,7.6vw,46px);line-height:1.12}
+  .close-slide .tag{margin-top:28px;font-size:10px}
+  .masthead{padding:8px 14px;font-size:10px} .masthead .brand .b{font-size:16px} .masthead .brand span:not(.b){display:none}
+  .footer{padding:8px 12px;gap:8px;font-size:11px} .footer .nav-btn{min-width:46px;min-height:42px;font-size:18px;padding:8px 14px}
+  .footer .counter{font-size:15px;min-width:50px} .footer .scrubber{display:none}
+  .now-playing{bottom:74px;left:10px;font-size:10px;padding:6px 10px;max-width:70%}
+  .cards-3{grid-template-columns:1fr}
+  .ask-row{grid-template-columns:1fr;gap:4px}
+}
+</style>
+</head>
+<body>
+<div class="deck">
+  <header class="masthead">
+    <div class="brand">
+      <span class="b">BiRAGAS<span class="dot">.</span></span>
+      <span>EDITORIAL · THE THREE RIGHTS</span>
+    </div>
+    <div class="meta">MMXXVI · 56 SLIDES · AYASS BIOSCIENCE</div>
+    <div class="controls">
+      <button class="btn" id="audio-btn" aria-pressed="false"><span class="dot"></span>AUDIO · OFF</button>
+      <button class="btn" id="auto-btn" aria-pressed="false"><span class="dot"></span>AUTO · OFF</button>
+      <button class="btn" id="fs-btn">⛶ FULLSCREEN</button>
+    </div>
+  </header>
+
+  <div class="stage">
+<section class="slide active" data-audio="audio/slide_01.mp3" data-label="BiRAGAS">
+  <div class="spread cover">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="eyebrow">Ayass BioScience · BiRAGAS Platform · MMXXVI</div>
+    <h1>BiRAGAS<br>The Three <span class="splash">Rights.</span></h1>
+    <div class="sub">Every <span class="acc">wrong target</span>. Every <span class="acc">wrong patient</span>. Every <span class="acc">wrong analysis</span>. We fix all three.</div>
+    <div class="meta-row">
+      <span class="pill red">EVIDENCE PLATFORM</span>
+      <span>The right target · The right patient · The right analysis</span>
+      <span class="pill">28 MODULES</span>
+    </div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_02.mp3" data-label="Drug discovery has been failing in three places, for forty years.">
+  <div class="spread body-slide" style="--accent:var(--mustard)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 02 · FRONT MATTER · BIRAGAS</div>
+    <div><span class="pill accent">MANIFESTO</span></div>
+  </div>
+    <div class="eyebrow">— The manifesto —</div>
+    <h2>Drug discovery has been failing in three places, for forty <span class="splash">years.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Pharma keeps building drugs against correlations, enrolling patients who can never respond, and analysing data with statistics that miss the <em>mechanism</em>.</div>
+      <div class="side"><div class="pull">Every failure is one of those three.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_03.mp3" data-label="BiRAGAS in one sentence.">
+  <div class="spread body-slide" style="--accent:var(--mustard)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 03 · FRONT MATTER · BIRAGAS</div>
+    <div><span class="pill accent">EXECUTIVE SUMMARY</span></div>
+  </div>
+    <div class="eyebrow">— Executive summary —</div>
+    <h2>BiRAGAS in one <span class="splash">sentence.</span></h2>
+    <div class="body-grid">
+      <div class="lede"><span class="num">Twenty</span>-<span class="num">eight</span> production modules.</div>
+      <div class="side"><div class="pull">One <em>auditable</em> platform — from FASTQ to <em>FDA-ready</em> dossier.</div><div>Three causal corrections.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_04.mp3" data-label="The Three Wrongs">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 04 · FRONT MATTER · BIRAGAS</div>
+    <div><span class="pill accent">THE FRAMEWORK</span></div>
+  </div>
+    <div class="eyebrow">— Three failures, one platform —</div>
+    <h2>The <em>Three</em> <span class="splash">Wrongs.</span></h2>
+    <div class="cards-3"><div class="card">
+        <div class="num">I</div>
+        <div class="card-label">WRONG TARGET</div>
+        <div class="card-desc">Chosen from correlations — never validated as causal.</div>
+      </div><div class="card">
+        <div class="num">II</div>
+        <div class="card-label">WRONG PATIENT</div>
+        <div class="card-desc">Stratified by averages that hide the actual responders.</div>
+      </div><div class="card">
+        <div class="num">III</div>
+        <div class="card-label">WRONG ANALYSIS</div>
+        <div class="card-desc">p-values that capture less than 30% of true causality.</div>
+      </div></div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_05.mp3" data-label="The first infrastructure that gets all three right.">
+  <div class="spread body-slide" style="--accent:var(--mustard)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 05 · FRONT MATTER · BIRAGAS</div>
+    <div><span class="pill accent">THESIS</span></div>
+  </div>
+    <div class="eyebrow">— The thesis —</div>
+    <h2>The first infrastructure that gets all three <span class="splash">right.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Not another <em>correlation</em> engine.</div>
+      <div class="side"><div class="pull">A complete causal platform — <em>auditable</em>, <em>FDA-aligned</em>, built from one disciplined pipeline.</div><div>Not another point tool.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_06.mp3" data-label="Chapter One · The Right Target — every time.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 06 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">CHAPTER 01</span></div>
+  </div>
+    <div class="eyebrow">— Chapter { romans(s.n) } —</div>
+    <h2>The Right Target — every time <span class="splash">every time.</span></h2>
+    <div class="body-grid single">
+      <div class="lede">A complete causal chapter of the BiRAGAS platform — diagnosis of the failure, correction of the mechanism, consequence for the field.</div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_07.mp3" data-label="90% of clinical failures trace to the wrong target.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 07 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">THE DIAGNOSIS</span></div>
+  </div>
+    <div class="eyebrow">— The diagnosis —</div>
+    <h2>90% of clinical failures trace to the wrong <span class="splash">target.</span></h2>
+    <div class="body-grid">
+      <div class="lede">The molecular target was never causally validated.</div>
+      <div class="side"><div class="pull">It was chosen because it correlated with disease — not because changing it would change the disease.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_08.mp3" data-label="The Correlation Trap">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 08 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">THE PROBLEM</span></div>
+  </div>
+    <div class="eyebrow">— The problem —</div>
+    <h2>The Correlation <span class="splash">Trap</span></h2>
+    <div class="body-grid">
+      <div class="lede">Two genes can move together for a thousand reasons — shared regulation, shared exposure, shared confounders.</div>
+      <div class="side"><div class="pull">Pharma has been spending billions chasing the other <span class="num">nine</span> hundred and <span class="num">ninety</span>-<span class="num">nine</span>.</div><div>Only one of those reasons is cause.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_09.mp3" data-label="$2.6B per approved drug · 14 years end-to-end · 90% attrition.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 09 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">THE COST</span></div>
+  </div>
+    <div class="eyebrow">— The cost —</div>
+    <h2>$2.6B per approved drug · 14 years end-to-end · 90% <span class="splash">attrition.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Every dollar of that is a vote of confidence in a target chosen by <em>correlation</em>.</div>
+      <div class="side"><div class="pull">The math has been wrong from the start.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_10.mp3" data-label="Causation, not correlation.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 10 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">THE CORRECTION</span></div>
+  </div>
+    <div class="eyebrow">— The correction —</div>
+    <h2>Causation, not <span class="splash">correlation.</span></h2>
+    <div class="body-grid">
+      <div class="lede">BiRAGAS interrogates every candidate target with Pearl&#x27;s causal calculus and a five-stream evidence stack before it ever leaves the platform.</div>
+      <div class="side"><div class="pull">Every target candidate is interrogated by Pearl&#x27;s causal calculus and a five-stream evidence stack before it ever leaves the platform.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_11.mp3" data-label="Pearl&#x27;s Do-Calculus">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 11 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">THE MATH</span></div>
+  </div>
+    <div class="eyebrow">— The mathematics —</div>
+    <h2>Pearl&#x27;s <span class="splash">Do-Calculus</span></h2>
+    <div class="body-grid">
+      <div class="lede">The mathematics of intervention, not just association.</div>
+      <div class="side"><div class="pull">The framework answers the only question pharma needs answered — if I perturb this gene, will the disease change?</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_12.mp3" data-label="Causal Calculus and Edge Validation">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 12 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 01</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Causal Calculus and Edge <span class="splash">Validation</span></h2>
+    <div class="body-grid">
+      <div class="lede">Every edge in the disease network is tested for directionality, confounding, and causal confidence.</div>
+      <div class="side"><div class="pull">The result is a validated causal DAG with every relationship <em>defensible</em> to a regulator.</div><div>Edges that fail are stripped.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_13.mp3" data-label="Causal DAG Construction">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 13 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 02</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Causal DAG <span class="splash">Construction</span></h2>
+    <div class="body-grid">
+      <div class="lede">Assemble a directed causal map of any disease from every available evidence stream — transcriptomic, genetic, perturbation, temporal, curated.</div>
+      <div class="side"><div class="pull">One source of truth.</div><div>One map. Every edge <em>auditable</em>.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_14.mp3" data-label="Mendelian Randomization">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 14 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 03</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Mendelian <span class="splash">Randomization</span></h2>
+    <div class="body-grid">
+      <div class="lede">Use genetic variants as nature&#x27;s randomised trials to estimate the causal effect of gene expression on disease.</div>
+      <div class="side"><div class="pull">The gold standard for causal anchoring, automated across thousands of genes.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_15.mp3" data-label="GWAS Association Mapping">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 15 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 04</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>GWAS Association <span class="splash">Mapping</span></h2>
+    <div class="body-grid">
+      <div class="lede">Connect every candidate to disease- and tissue-specific GWAS evidence — eQTLs, sQTLs, GWAS Catalog hits — and prune anything genetics will not support.</div>
+      <div class="side"><div class="pull">GWAS Association Mapping.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_16.mp3" data-label="SIGNOR Causal Pathway Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 16 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 05</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>SIGNOR Causal Pathway <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">Trace every gene through the SIGNOR curated signalling network — the most rigorous causal pathway database in biology.</div>
+      <div class="side"><div class="pull">Discover not just what is associated, but how it acts.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_17.mp3" data-label="Network Centrality &amp; Target Tiering">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 17 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 06</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Network Centrality &amp; Target <span class="splash">Tiering</span></h2>
+    <div class="body-grid">
+      <div class="lede">Score every gene by its position in the causal DAG.</div>
+      <div class="side"><div class="pull">Tier it as Master Regulator, Secondary Driver, or Downstream Effector.</div><div>Targets at the top of the cascade matter most.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_18.mp3" data-label="In-Silico Perturbation · Population">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 18 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 07</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>In-Silico Perturbation · <span class="splash">Population</span></h2>
+    <div class="body-grid">
+      <div class="lede">Simulate what happens when you knock down, partially inhibit, or activate every candidate in the network. Rank by therapeutic potential.</div>
+      <div class="side"><div class="pull">The wet lab tells you yes or no.</div><div>We tell you which experiment to run first.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_19.mp3" data-label="Perturbation Analysis Suite">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 19 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 08</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Perturbation Analysis <span class="splash">Suite</span></h2>
+    <div class="body-grid">
+      <div class="lede">A unified entry point combining CRISPR dependency screens, drug-perturbation transcriptomics, and connectivity-map evidence.</div>
+      <div class="side"><div class="pull">Every candidate enters with one ID and leaves with five independent causal verdicts.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_20.mp3" data-label="Targets backed by causation, not correlation.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 20 · CHAPTER 01 · BIRAGAS</div>
+    <div><span class="pill accent">THE CONSEQUENCE</span></div>
+  </div>
+    <div class="eyebrow">— The consequence —</div>
+    <h2>Targets backed by causation, not <span class="splash">correlation.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Every target that leaves BiRAGAS carries a Pearl-grade causal verdict, genetic anchoring, perturbation evidence, and a <em>defensible</em> <em>mechanism</em>.</div>
+      <div class="side"><div class="pull">The <em>wrong target</em> problem ends here.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_21.mp3" data-label="Chapter Two · The Right Patient — every time.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 21 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">CHAPTER 02</span></div>
+  </div>
+    <div class="eyebrow">— Chapter { romans(s.n) } —</div>
+    <h2>The Right Patient — every time <span class="splash">every time.</span></h2>
+    <div class="body-grid single">
+      <div class="lede">A complete causal chapter of the BiRAGAS platform — diagnosis of the failure, correction of the mechanism, consequence for the field.</div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_22.mp3" data-label="Trials enrol non-responders. The signal dies in the average.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 22 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">THE DIAGNOSIS</span></div>
+  </div>
+    <div class="eyebrow">— The diagnosis —</div>
+    <h2>Trials enrol non-responders. The signal dies in the <span class="splash">average.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Phase Two trials fail not because the drug doesn&#x27;t work, but because the drug works only in a subset — and the trial enrolled everyone else along with them.</div>
+      <div class="side"><div class="pull">Average effects across mixed cohorts hide the responders.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_23.mp3" data-label="70%+ Phase II failure · molecular subgroups averaged away.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 23 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">THE COST</span></div>
+  </div>
+    <div class="eyebrow">— The cost —</div>
+    <h2>70%+ Phase II failure · molecular subgroups averaged <span class="splash">away.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Drugs that worked in a specific molecular subgroup were discarded because the trial averaged them out.</div>
+      <div class="side"><div class="pull">Patients who could have responded were never told they qualified.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_24.mp3" data-label="Patient-specific causality.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 24 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">THE CORRECTION</span></div>
+  </div>
+    <div class="eyebrow">— The correction —</div>
+    <h2>Patient-specific <span class="splash">causality.</span></h2>
+    <div class="body-grid">
+      <div class="lede">BiRAGAS replaces population averages with per-patient mechanisms.</div>
+      <div class="side"><div class="pull">Every patient gets their own re-personalised network, their own target ranking, their own responder verdict — before the trial enrols anyone.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_25.mp3" data-label="Cohort &amp; Data Retrieval">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 25 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 09</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Cohort &amp; Data <span class="splash">Retrieval</span></h2>
+    <div class="body-grid">
+      <div class="lede">A search engine for biological data — GEO, TCGA, dbGaP, ArrayExpress, single-cell atlases.</div>
+      <div class="side"><div class="pull">Tell the assistant disease, tissue, cohort size; it pulls the matching evidence in one workflow.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_26.mp3" data-label="Data Harmonisation">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 26 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 10</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Data <span class="splash">Harmonisation</span></h2>
+    <div class="body-grid">
+      <div class="lede">Make heterogeneous studies directly comparable.</div>
+      <div class="side"><div class="pull">Standardise, validate, combine expression cohorts across platforms and laboratories.</div><div>Without this, every downstream comparison is apples-to-oranges.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_27.mp3" data-label="Cell-Type Deconvolution">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 27 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 11</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Cell-Type <span class="splash">Deconvolution</span></h2>
+    <div class="body-grid">
+      <div class="lede">Estimate the cellular composition behind every bulk RNA-seq sample — immune fractions, stromal context, fine-grained cell types.</div>
+      <div class="side"><div class="pull">Three orthogonal algorithms.</div><div>One harmonised answer.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_28.mp3" data-label="Multi-Omics Integration">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 28 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 12</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Multi-Omics <span class="splash">Integration</span></h2>
+    <div class="body-grid">
+      <div class="lede">Combine DNA, RNA, proteins, epigenetic marks, and metabolites from the same samples into one integrated biological view.</div>
+      <div class="side"><div class="pull">The same gene means different things in different layers — we tell you which one to trust.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_29.mp3" data-label="Single-Cell RNA-seq Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 29 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 13</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Single-Cell RNA-seq <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">Turn raw single-cell data into a biology-rich atlas — cell types annotated, markers ranked, pathways linked, trajectories inferred.</div>
+      <div class="side"><div class="pull">Patient stratification at the resolution of one cell at a time.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_30.mp3" data-label="Multi-Disease Pathway Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 30 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 14</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Multi-Disease Pathway <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">Compare pathway alterations across multiple diseases or cohorts at once. Surface shared mechanisms.</div>
+      <div class="side"><div class="pull">Find the cross-indication repositioning that one cohort alone never reveals.</div><div>Detect disease-specific signatures.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_31.mp3" data-label="In-Silico Perturbation · Patient">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 31 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 15</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>In-Silico Perturbation · <span class="splash">Patient</span></h2>
+    <div class="body-grid">
+      <div class="lede">Re-run the perturbation simulation for every patient individually, using each patient&#x27;s own expression profile.</div>
+      <div class="side"><div class="pull">One drug, <span class="num">ten</span> patients, <span class="num">ten</span> different verdicts.</div><div>Precision medicine made operational.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_32.mp3" data-label="Temporal Analysis · Bulk Transcriptomics">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 32 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 16</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Temporal Analysis · Bulk <span class="splash">Transcriptomics</span></h2>
+    <div class="body-grid">
+      <div class="lede">Recover the time direction hidden in any cohort — discover which genes, pathways, cell types follow impulse-shaped trajectories along disease progression.</div>
+      <div class="side"><div class="pull">A static cohort, given dynamics.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_33.mp3" data-label="Temporal Granger Causality">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 33 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 17</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Temporal Granger <span class="splash">Causality</span></h2>
+    <div class="body-grid">
+      <div class="lede">Reconstruct directed, time-resolved causal relationships from longitudinal expression data.</div>
+      <div class="side"><div class="pull">Granger makes that test rigorous and machine-checkable.</div><div>Cause must precede effect.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_34.mp3" data-label="Stratified cohorts. Mechanism-anchored responders.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 34 · CHAPTER 02 · BIRAGAS</div>
+    <div><span class="pill accent">THE CONSEQUENCE</span></div>
+  </div>
+    <div class="eyebrow">— The consequence —</div>
+    <h2>Stratified cohorts. Mechanism-anchored <span class="splash">responders.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Every patient stratified by their own molecular biology. Every responder identified by <em>mechanism</em>.</div>
+      <div class="side"><div class="pull">Every cohort enrolled around evidence — not averages.</div><div>The <em>wrong patient</em> problem ends here.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_35.mp3" data-label="Chapter Three · The Right Analysis — every time.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 35 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">CHAPTER 03</span></div>
+  </div>
+    <div class="eyebrow">— Chapter { romans(s.n) } —</div>
+    <h2>The Right Analysis — every time <span class="splash">every time.</span></h2>
+    <div class="body-grid single">
+      <div class="lede">A complete causal chapter of the BiRAGAS platform — diagnosis of the failure, correction of the mechanism, consequence for the field.</div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_36.mp3" data-label="p-values capture ≤ 30% of true causality.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 36 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">THE DIAGNOSIS</span></div>
+  </div>
+    <div class="eyebrow">— The diagnosis —</div>
+    <h2>p-values capture ≤ 30% of true <span class="splash">causality.</span></h2>
+    <div class="body-grid">
+      <div class="lede">A significant p-value tells you the data is unlikely under chance.</div>
+      <div class="side"><div class="pull">Empirical reviews put p-values at less than thirty percent of true causal signal.</div><div>It does not tell you the variable is causal.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_37.mp3" data-label="Reproducibility crisis · FDA pushback · retracted papers.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 37 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">THE COST</span></div>
+  </div>
+    <div class="eyebrow">— The cost —</div>
+    <h2>Reproducibility crisis · FDA pushback · retracted <span class="splash">papers.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Biomarker qualification submissions sent back for lack of <em>mechanism</em>.</div>
+      <div class="side"><div class="pull">Investor money lost to statistically significant but causally hollow claims.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_38.mp3" data-label="Causal Confidence Score, not p-values alone.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 38 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">THE CORRECTION</span></div>
+  </div>
+    <div class="eyebrow">— The correction —</div>
+    <h2>Causal Confidence Score, not p-values <span class="splash">alone.</span></h2>
+    <div class="body-grid">
+      <div class="lede">BiRAGAS replaces the p-value with a multi-evidence verdict — statistical significance, directionality, replication, perturbation, <em>mechanism</em>.</div>
+      <div class="side"><div class="pull"><em>Defensible</em> to a regulator.</div><div>Three tiers.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_39.mp3" data-label="FASTQ Sequencing Pipeline">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 39 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 18</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>FASTQ Sequencing <span class="splash">Pipeline</span></h2>
+    <div class="body-grid">
+      <div class="lede">Turn raw sequencing reads into clean, quantified, analysis-ready gene count matrices. Quality control.</div>
+      <div class="side"><div class="pull">Every reproducible analysis starts here.</div><div>Adaptive trimming. Transcript quantification.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_40.mp3" data-label="Differential Expression Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 40 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 19</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Differential Expression <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">Turn raw transcriptomic data into a statistically validated list of differentially expressed genes — across patient cohorts, treatment arms, and disease subtypes.</div>
+      <div class="side"><div class="pull">Effect size, multiple-testing-corrected, <em>mechanism</em>-anchored.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_41.mp3" data-label="Total RNA &amp; miRNA Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 41 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 20</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Total RNA &amp; miRNA <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">From raw transcript quantifications to a fully-interpreted transcriptome story — differential expression at gene and transcript level, isoform usage, non-coding RNAs.</div>
+      <div class="side"><div class="pull">The complete picture, in one report.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_42.mp3" data-label="CRISPR Data Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 42 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 21</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>CRISPR Data <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">A unified workspace from amplicon edit verification, to pooled screening hit discovery, to single-cell perturbation.</div>
+      <div class="side"><div class="pull">CRISPR is the gold standard for causality — we make it production-grade.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_43.mp3" data-label="Targeted CRISPR Editing Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 43 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 22</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Targeted CRISPR Editing <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">Validate every edit with publication-grade quantification of indel outcomes, on-target efficiency, and allele-level evidence.</div>
+      <div class="side"><div class="pull">Every claim audit-ready.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_44.mp3" data-label="Pooled CRISPR Screening Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 44 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 23</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Pooled CRISPR Screening <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">Turn pooled screens into statistically validated gene-level hit lists with essentiality scoring and DepMap-style prioritisation.</div>
+      <div class="side"><div class="pull">The <em>mechanism</em>-ranked target list is the output.</div><div>The screen is the input.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_45.mp3" data-label="Perturb-seq · Single-Cell CRISPR Perturbation">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 45 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 24</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Perturb-seq · Single-Cell CRISPR <span class="splash">Perturbation</span></h2>
+    <div class="body-grid">
+      <div class="lede">The most powerful target-validation engine in modern genomics — link CRISPR perturbations directly to single-cell transcriptomic states.</div>
+      <div class="side"><div class="pull">Causal claims at the resolution of an individual cell.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_46.mp3" data-label="DepMap Dependency &amp; Essentiality Analysis">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 46 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 25</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>DepMap Dependency &amp; Essentiality <span class="splash">Analysis</span></h2>
+    <div class="body-grid">
+      <div class="lede">Discover which genes a tumour truly needs to survive. Cross-reference candidates with the Broad Institute&#x27;s dependency map across <span class="num">1,800</span>+ cancer models.</div>
+      <div class="side"><div class="pull">Essentiality.</div><div>Selectivity. Tractability.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_47.mp3" data-label="Drug Repositioning · L1000 Connectivity Map">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 47 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 26</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Drug Repositioning · L1000 Connectivity <span class="splash">Map</span></h2>
+    <div class="body-grid">
+      <div class="lede">Discover which drugs already in clinical use reverse the transcriptomic signature of your disease — at what dose, in which tissue.</div>
+      <div class="side"><div class="pull">Repositioning is the fastest path from target to clinic.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_48.mp3" data-label="Gene &amp; Pathway Prioritisation">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 48 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 27</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Gene &amp; Pathway <span class="splash">Prioritisation</span></h2>
+    <div class="body-grid">
+      <div class="lede">Turn any gene list into a deduplicated, literature-anchored, clinically-relevant pathway ranking. Multiple databases.</div>
+      <div class="side"><div class="pull">One consistent ranking.</div><div>Always reproducible.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_49.mp3" data-label="Report Generation">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 49 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">MODULE · 28</span></div>
+  </div>
+    <div class="eyebrow">— Production module —</div>
+    <h2>Report <span class="splash">Generation</span></h2>
+    <div class="body-grid">
+      <div class="lede">Turn every analysis into a professional, shareable, publication-ready report — executive summaries, interactive dashboards, high-resolution figures.</div>
+      <div class="side"><div class="pull">From notebook to investor deck in one click.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_50.mp3" data-label="Causality-grade evidence. FDA-aligned.">
+  <div class="spread body-slide" style="--accent:var(--red)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 50 · CHAPTER 03 · BIRAGAS</div>
+    <div><span class="pill accent">THE CONSEQUENCE</span></div>
+  </div>
+    <div class="eyebrow">— The consequence —</div>
+    <h2>Causality-grade evidence. <span class="splash">FDA-aligned.</span></h2>
+    <div class="body-grid">
+      <div class="lede">Every analysis carries a <em>Causal Confidence Score</em>. Every claim a <em>defensible</em> <em>mechanism</em>.</div>
+      <div class="side"><div class="pull">The <em>wrong analysis</em> problem ends here.</div><div>Every output an audit trail.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_51.mp3" data-label="The Three Rights.">
+  <div class="spread body-slide" style="--accent:var(--mustard)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 51 · CLOSING · BIRAGAS</div>
+    <div><span class="pill accent">THE THREE RIGHTS</span></div>
+  </div>
+    <div class="eyebrow">— Three corrections, one platform —</div>
+    <h2>The <em>Three</em> <span class="splash">Rights.</span></h2>
+    <div class="cards-3"><div class="card right-card red">
+        <div class="num">I</div>
+        <div class="card-label">RIGHT TARGET</div>
+        <div class="card-desc">Validated by Pearl&#x27;s causal calculus.</div>
+      </div><div class="card right-card mustard">
+        <div class="num">II</div>
+        <div class="card-label">RIGHT PATIENT</div>
+        <div class="card-desc">Stratified by mechanism, not by averages.</div>
+      </div><div class="card right-card cobalt">
+        <div class="num">III</div>
+        <div class="card-label">RIGHT ANALYSIS</div>
+        <div class="card-desc">Anchored by Causal Confidence Score.</div>
+      </div></div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_52.mp3" data-label="Causion · The Natural-Language Agent.">
+  <div class="spread body-slide" style="--accent:var(--mustard)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 52 · CLOSING · BIRAGAS</div>
+    <div><span class="pill accent">CAUSION</span></div>
+  </div>
+    <div class="eyebrow">— The natural-language layer —</div>
+    <h2>Causion · The Natural-Language <span class="splash">Agent.</span></h2>
+    <div class="body-grid">
+      <div class="lede">All <span class="num">twenty</span>-<span class="num">eight</span> modules sit behind one natural-language agent. Ask in plain English.</div>
+      <div class="side"><div class="pull">Receive a source-linked, audit-grade answer.</div><div>Complexity stays under the hood. Clarity ships to the regulator.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_53.mp3" data-label="FASTQ → FDA-Ready Dossier.">
+  <div class="spread body-slide" style="--accent:var(--mustard)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 53 · CLOSING · BIRAGAS</div>
+    <div><span class="pill accent">THE PIPELINE</span></div>
+  </div>
+    <div class="eyebrow">— FASTQ to FDA-ready dossier —</div>
+    <h2>The <em>Six-Step</em> <span class="splash">Pipeline.</span></h2>
+    <div class="pipeline-flow"><div class="pipe-node">FASTQ</div><span class="pipe-arrow">→</span><div class="pipe-node">HARMONIZE</div><span class="pipe-arrow">→</span><div class="pipe-node">DEG</div><span class="pipe-arrow">→</span><div class="pipe-node">PATHWAY</div><span class="pipe-arrow">→</span><div class="pipe-node">CAUSAL MR</div><span class="pipe-arrow">→</span><div class="pipe-node dossier">DOSSIER</div></div>
+    <div class="body-grid single">
+      <div class="lede">Six disciplined steps.</div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_54.mp3" data-label="The Ask.">
+  <div class="spread body-slide" style="--accent:var(--cobalt)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 54 · CLOSING · BIRAGAS</div>
+    <div><span class="pill accent">THE ASK</span></div>
+  </div>
+    <div class="eyebrow">— Three doors. One platform. —</div>
+    <h2>The <span class="splash">Ask.</span></h2>
+    <div class="ask-grid"><div class="ask-row">
+          <div class="k">Series A</div>
+          <div class="v">Capital to scale <em>infrastructure</em> and grow the team.</div>
+        </div><div class="ask-row">
+          <div class="k">Pharma Partnerships</div>
+          <div class="v">Target identification and patient stratification.</div>
+        </div><div class="ask-row">
+          <div class="k">Academic Licensing</div>
+          <div class="v">Ongoing causal-AI research.</div>
+        </div></div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_55.mp3" data-label="We are not building another AI.">
+  <div class="spread body-slide" style="--accent:var(--mustard)">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="folio">
+    <div>p. 55 · CLOSING · BIRAGAS</div>
+    <div><span class="pill accent">THESIS</span></div>
+  </div>
+    <div class="eyebrow">— The manifesto —</div>
+    <h2>We are not building another <span class="splash">AI.</span></h2>
+    <div class="body-grid">
+      <div class="lede">We are building the <em>infrastructure</em> that finally tells biology&#x27;s <em>actual story</em>. <em>Mechanism</em> over <em>correlation</em>.</div>
+      <div class="side"><div class="pull">One chance to do this properly.</div><div><em>Patient over average</em>. <em>Causation</em> over coincidence. Three rights. One platform.</div></div>
+    </div>
+    <div class="audio-hint">click headline to replay narration</div>
+  </div>
+</section>
+<section class="slide" data-audio="audio/slide_56.mp3" data-label="Ayass BioScience">
+  <div class="spread close-slide">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="eyebrow">— THE EDITORS' NOTE · BIRAGAS · MMXXVI —</div>
+    <div class="manifesto">We are not building another AI.</div>
+    <div class="manifesto next">We are building the <span class="acc">infrastructure</span><span class="period"></span></div>
+    <div class="tag">Ayass BioScience · MMXXVI · BIRAGAS</div>
+  </div>
+</section>
+  </div>
+
+  <footer class="footer">
+    <button class="nav-btn" id="prev" aria-label="Previous slide">←</button>
+    <div class="counter" id="counter" aria-live="polite">01<span class="of">/</span>56</div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="scrubber" id="scrubber"></div>
+    <button class="nav-btn" id="next" aria-label="Next slide">→</button>
+  </footer>
+
+  <button class="side-nav prev" id="side-prev" aria-label="Previous slide" type="button"><span class="chev">‹</span></button>
+  <button class="side-nav next" id="side-next" aria-label="Next slide" type="button"><span class="chev">›</span></button>
+</div>
+
+<audio id="player" preload="auto"></audio>
+
+<div class="now-playing" id="now-playing">
+  <span class="eq"><span></span><span></span><span></span><span></span></span>
+  <span id="np-label">narration</span>
+</div>
+
+<script>
+const slides = [...document.querySelectorAll('.slide')];
+const player = document.getElementById('player');
+const audioBtn = document.getElementById('audio-btn');
+const autoBtn = document.getElementById('auto-btn');
+const fsBtn = document.getElementById('fs-btn');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const sidePrev = document.getElementById('side-prev');
+const sideNext = document.getElementById('side-next');
+const counter = document.getElementById('counter');
+const bar = document.getElementById('bar');
+const scrubber = document.getElementById('scrubber');
+const npLabel = document.getElementById('np-label');
+const nowPlay = document.getElementById('now-playing');
+
+let cur = 0;
+let audioOn = false;
+let autoOn = false;
+const N = slides.length;
+
+slides.forEach((s, i) => {
+  const pip = document.createElement('div');
+  pip.className = 'pip';
+  pip.title = s.dataset.label || ('slide ' + (i+1));
+  pip.addEventListener('click', () => goTo(i));
+  scrubber.appendChild(pip);
+});
+const pips = [...scrubber.children];
+
+function pad(n){ return String(n).padStart(2,'0'); }
+function updateUI() {
+  counter.innerHTML = `${pad(cur+1)}<span class="of">/</span>${pad(N)}`;
+  bar.style.width = `${100*(cur+1)/N}%`;
+  pips.forEach((p, i) => {
+    p.classList.toggle('done', i < cur);
+    p.classList.toggle('active', i === cur);
+  });
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === N - 1;
+  sidePrev.disabled = cur === 0;
+  sideNext.disabled = cur === N - 1;
+  // auto-scroll the scrubber to keep current pip visible
+  const activePip = pips[cur];
+  if (activePip && activePip.scrollIntoView) {
+    activePip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
+}
+function goTo(i) {
+  if (i < 0 || i >= N) return;
+  slides[cur].classList.remove('active');
+  cur = i;
+  slides[cur].classList.add('active');
+  updateUI();
+  if (audioOn) playSlideAudio();
+}
+function playSlideAudio() {
+  const p = slides[cur].dataset.audio;
+  if (!p) { player.pause(); nowPlay.classList.remove('on'); return; }
+  player.src = p;
+  player.play().then(() => {
+    npLabel.textContent = slides[cur].dataset.label || 'narration';
+    nowPlay.classList.add('on');
+  }).catch(()=>nowPlay.classList.remove('on'));
+}
+audioBtn.addEventListener('click', () => {
+  audioOn = !audioOn;
+  audioBtn.classList.toggle('on', audioOn);
+  audioBtn.innerHTML = `<span class="dot"></span>${audioOn ? 'AUDIO · ON' : 'AUDIO · OFF'}`;
+  if (audioOn) playSlideAudio();
+  else { player.pause(); nowPlay.classList.remove('on'); }
+});
+autoBtn.addEventListener('click', () => {
+  autoOn = !autoOn;
+  autoBtn.classList.toggle('on', autoOn);
+  autoBtn.innerHTML = `<span class="dot"></span>${autoOn ? 'AUTO · ON' : 'AUTO · OFF'}`;
+});
+fsBtn.addEventListener('click', () => {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+});
+player.addEventListener('ended', () => {
+  nowPlay.classList.remove('on');
+  if (autoOn) goTo(cur + 1);
+});
+prevBtn.addEventListener('click', () => goTo(cur - 1));
+nextBtn.addEventListener('click', () => goTo(cur + 1));
+sidePrev.addEventListener('click', () => goTo(cur - 1));
+sideNext.addEventListener('click', () => goTo(cur + 1));
+
+let _tx = null, _ty = null;
+document.addEventListener('touchstart', e => { const t = e.changedTouches[0]; _tx = t.clientX; _ty = t.clientY; }, {passive:true});
+document.addEventListener('touchend', e => {
+  if (_tx === null) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - _tx, dy = t.clientY - _ty;
+  if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    if (dx < 0) goTo(cur + 1); else goTo(cur - 1);
+  }
+  _tx = _ty = null;
+}, {passive:true});
+
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();goTo(cur+1);}
+  else if (e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();goTo(cur-1);}
+  else if (e.key==='Home') goTo(0);
+  else if (e.key==='End') goTo(N-1);
+  else if (e.key==='a'||e.key==='A') audioBtn.click();
+  else if (e.key==='f'||e.key==='F') fsBtn.click();
+});
+document.addEventListener('click', e => {
+  const t = e.target.closest('.cover h1, .body-slide h2, .close-slide .manifesto');
+  if (!t) return;
+  if (!audioOn) { audioOn = true; audioBtn.classList.add('on'); audioBtn.innerHTML = '<span class="dot"></span>AUDIO · ON'; }
+  playSlideAudio();
+});
+updateUI();
+</script>
+</body></html>
